@@ -1,9 +1,11 @@
 import 'dart:developer';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:newspaper_app/components/testField.dart';
 import 'package:newspaper_app/config/base.dart';
+import 'package:newspaper_app/service/internet_connection.dart';
 import 'package:newspaper_app/views/home_screen.dart';
 import 'package:get/get.dart';
 
@@ -15,7 +17,7 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> with Base {
-  // final _auth = FirebaseAuth.instance;
+  final _auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,8 +25,8 @@ class _SignUpScreenState extends State<SignUpScreen> with Base {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24.0),
         child: Column(
-          // mainAxisAlignment: MainAxisAlignment.center,
-          // crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             TextField(
                 keyboardType: TextInputType.emailAddress,
@@ -42,73 +44,71 @@ class _SignUpScreenState extends State<SignUpScreen> with Base {
                 textAlign: TextAlign.center,
                 onChanged: (value) {
                   signupC.password.value = value;
-            //     },
-            //     decoration: kTextFieldDecoration.copyWith(
-            //         hintText: 'Enter your Password')),
-            // const SizedBox(
-            //   height: 24.0,
-            // ),
-            //
-            // Padding(
-            //   padding: const EdgeInsets.symmetric(vertical: 16.0),
-            //   child: Material(
-            //     elevation: 5.0,
-            //     color: Colors.lightBlueAccent,
-            //     borderRadius: BorderRadius.circular(30.0),
-            //     child: MaterialButton(
-            //       onPressed: () async {
-            //         setState(() {
-            //           loginC.showSpinner.value = true;
-            //         });
-            //
-            //         try {
-            //           if ((signupC.password.value.length >= 6 &&
-            //                   signupC.password.value != null) &&
-            //               (signupC.email.value.length >= 2 &&
-                              signupC.email.value.contains('@') &&
-                              signupC.email.value.endsWith('.com'))) {
-                        final newUser =
-                            await _auth.createUserWithEmailAndPassword(
-                                email: signupC.email.value,
-                                password: signupC.password.value);
-                    //     if (newUser != null) {
-                    //       Get.offAll(() => const HomeScreen());
-                    //     }
-                    //   } else {
-                    //     Get.snackbar(
-                    //       'Attention!!',
-                    //       'Email adddress and Password less then 6 caracter',
-                    //       colorText: Colors.red,
-                    //       snackPosition: SnackPosition.BOTTOM,
-                    //       backgroundColor: Colors.white,
-                    //     );
-                    //   }
-                    // } catch (e) {
-                    //   Get.snackbar(
-                    //     'Attention!!',
-                    //     'Please enterd email adddress and Password less then 6 caracter',
-                    //     colorText: Colors.red,
-                    //     snackPosition: SnackPosition.BOTTOM,
+                },
+                decoration: kTextFieldDecoration.copyWith(
+                    hintText: 'Enter your Password')),
+            const SizedBox(
+              height: 24.0,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
+              child: Material(
+                elevation: 5.0,
+                color: Colors.lightBlueAccent,
+                borderRadius: BorderRadius.circular(30.0),
+                child: MaterialButton(
+                  onPressed: () async {
+                    final connectivityResult =
+                        await InternetConnection.isConnectedToInternet();
+                    if (connectivityResult) {
+                      setState(() {
+                        loginC.showSpinner.value = true;
+                      });
+
+                      try {
+                        if ((signupC.password.value.length >= 6 &&
+                                signupC.password.value != null) &&
+                            (signupC.email.value.length >= 2 &&
+                                signupC.email.value.contains('@') &&
+                                signupC.email.value.endsWith('.com'))) {
+                          final newUser =
+                              await _auth.createUserWithEmailAndPassword(
+                                  email: signupC.email.value,
+                                  password: signupC.password.value);
+                          if (newUser != null) {
+                            Get.offAll(() => const HomeScreen());
+                          }
+                        } else {
+                          Get.snackbar(
+                            'Attention!!',
+                            'Email adddress and Password less then 6 caracter',
+                            colorText: Colors.red,
+                            snackPosition: SnackPosition.BOTTOM,
+                            backgroundColor: Colors.white,
+                          );
+                        }
+                      } catch (e) {
+                        Get.snackbar(
+                          'Attention!!',
+                          'Please entered email address and Password less then 6',
+                          colorText: Colors.red,
+                          snackPosition: SnackPosition.BOTTOM,
+                          backgroundColor: Colors.white,
+                        );
+                        log('$e');
+                      }
+                      setState(() {
+                        loginC.showSpinner.value = false;
+                      });
+                    } else {
+                      Get.snackbar(
+                        'Attention!!',
+                        'Please check your internet connection.',
+                        colorText: Colors.red,
+                        snackPosition: SnackPosition.BOTTOM,
                         backgroundColor: Colors.white,
                       );
-                      log('$e');
                     }
-
-                    //
-                    // try {
-                    //   final user = await _auth.signInWithEmailAndPassword(
-                    //       email: loginC.email.value,
-                    //       password: loginC.password.value);
-                    //   if (user != null) {
-                    //     Get.off(() => const HomeScreen());
-                    //     //  push(HomeScreen());
-                    //   }
-                    // } catch (e) {
-                    //   print(e);
-                    // }
-                    setState(() {
-                      loginC.showSpinner.value = false;
-                    });
                   },
                   //Go to login screen.
                   minWidth: 200.0,
@@ -120,27 +120,6 @@ class _SignUpScreenState extends State<SignUpScreen> with Base {
                 ),
               ),
             )
-            // RoundedButton(
-            //   colour: Colors.blueAccent,
-            //   title: 'Register',
-            //   onPressed: () async {
-            //     setState(() {
-            //       showSpinner = true;
-            //     });
-            //     try {
-            //       final newUser = await _auth.createUserWithEmailAndPassword(
-            //           email: email, password: password);
-            //       if (newUser != null) {
-            //         Navigator.pushNamed(context, 'home_screen');
-            //       }
-            //     } catch (e) {
-            //       print(e);
-            //     }
-            //     setState(() {
-            //       showSpinner = false;
-            //     });
-            //   },
-            // )
           ],
         ),
       ),
