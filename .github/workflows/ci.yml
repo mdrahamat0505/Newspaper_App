@@ -27,3 +27,6 @@ jobs:
       
       - name: Run tests
         run: dart test
+        
+        
+        #https://www.ravsam.in/blog/setup-github-actions-for-dart-project/
