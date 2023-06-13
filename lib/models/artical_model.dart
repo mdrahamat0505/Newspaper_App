@@ -23,16 +23,20 @@ class ArticleModel {
   String? publishedAt;
   @HiveField(7)
   Source? source;
+  @HiveField(8)
+  bool? favorite;
 
-  ArticleModel(
-      {this.source,
-      this.author,
-      this.title,
-      this.description,
-      this.url,
-      this.urlToImage,
-      this.publishedAt,
-      this.content});
+  ArticleModel({
+    this.source,
+    this.author,
+    this.title,
+    this.description,
+    this.url,
+    this.urlToImage,
+    this.publishedAt,
+    this.content,
+    this.favorite,
+  });
   //
   // factory ArticleModel.fromJson(Map<String, dynamic> json) =>
   //     _$ArticleModelFromJson(json);

@@ -86,23 +86,25 @@ class NewsController extends GetxController {
       newsList.clear();
       var now = DateTime.now();
 
-      var date = DateFormat('yyyy-MM-dd').format(now);
+      var date = DateFormat('yyyy-MM-dd')
+          .format(DateTime(now.year, now.month - 1, now.day));
 
       var url =
           "https://newsapi.org/v2/everything?q=tesla&from=$date&sortBy=publishedAt&apiKey=2638cc7ff4b94a488a46fa7642c06097";
 
       var url1 =
           "https://newsapi.org/v2/everything?q=tesla&from=$date&sortBy=publishedAt&apiKey=2638cc7ff4b94a488a46fa7642c06097";
+      var url4 ="https://newsapi.org/v2/top-headlines?country=us&apiKey=2638cc7ff4b94a488a46fa7642c06097";
 
       // var url1 =
       //     "https://newsapi.org/v2/everything?q=tesla&from=$date&sortBy=publishedAt&apiKey=2638cc7ff4b94a488a46fa7642c06097";
 
       var url3 =
-          "https://newsapi.org/v2/everything?q=tesla&from=2023-04-27&sortBy=publishedAt&apiKey=2638cc7ff4b94a488a46fa7642c06097";
+          "https://newsapi.org/v2/everything?q=tesla&from=$date&sortBy=publishedAt&apiKey=2638cc7ff4b94a488a46fa7642c06097";
 
       // update();
 
-      http.Response res = await http.get(Uri.parse(url3));
+      http.Response res = await http.get(Uri.parse(url4));
 
       if (res.statusCode == 200) {
         String data = res.body;
