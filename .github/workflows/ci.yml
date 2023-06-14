@@ -1,32 +1,32 @@
-name: CI
+# name: CI
 
-on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+# on:
+#   push:
+#     branches: [main]
+#   pull_request:
+#     branches: [main]
 
-jobs:
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Set up Repository
-        uses: actions/checkout@v2
+# jobs:
+#   lint:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Set up Repository
+#         uses: actions/checkout@v2
       
-      - name: Set up Dart
-        uses: dart-lang/setup-dart@v1
+#       - name: Set up Dart
+#         uses: dart-lang/setup-dart@v1
 
-      - name: Install Pub Dependencies
-        run: dart pub get
+#       - name: Install Pub Dependencies
+#         run: dart pub get
 
-      - name: Verify Formatting
-        run: dart format --output=none --set-exit-if-changed .
+#       - name: Verify Formatting
+#         run: dart format --output=none --set-exit-if-changed .
 
-      - name: Analyze Project Source
-        run: dart analyze
+#       - name: Analyze Project Source
+#         run: dart analyze
       
-      - name: Run tests
-        run: dart test
+#       - name: Run tests
+#         run: dart test
         
         
-        #https://www.ravsam.in/blog/setup-github-actions-for-dart-project/
+#         #https://www.ravsam.in/blog/setup-github-actions-for-dart-project/

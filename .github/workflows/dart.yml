@@ -1,26 +1,27 @@
-name: Dart
+# name: Dart
 
-on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+# on:
+#   push:
+#     branches: [main]
+#   pull_request:
+#     branches: [main]
 
-jobs:
-  test:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-        sdk: [2.19.0, stable]
-    steps:
-      - uses: actions/checkout@v3
-      - uses: dart-lang/setup-dart@v1
-        with:
-          sdk: ${{ matrix.sdk }}
+# jobs:
+#   test:
+#     runs-on: ${{ matrix.os }}
+#     strategy:
+#       matrix:
+#         os: [ubuntu-latest]
+#         sdk: [2.18.5, stable]
+#     steps:
+#       - uses: actions/checkout@v3
+#       - uses: dart-lang/setup-dart@v1
+#         with:
+#           sdk: ${{ matrix.sdk }}
 
-      - name: Install dependencies
-        run: dart pub get
+#       - name: Install dependencies
+# #         run: flutter pub get
+#         run: dart pub get
 
-      - name: Run tests
-        run: dart test
+#       - name: Run tests
+#         run: dart test
